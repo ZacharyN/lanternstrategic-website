@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-crimson: #761215;
+  --color-deep-crimson: #4d0b0d;
+  --color-ember: #a01a1e;
+  --color-rust: #c4403a;
+  --color-warm-blush: #f5e6e6;
+  --color-parchment: #faf6f0;
+  --color-parchment-2: #f3ece0;
+  --color-charcoal: #2a2421;
+  --color-warm-gray: #7a6e6b;
+  --color-stone: #e8e0dc;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+}
+
+:root {
+  --gutter: clamp(20px, 4vw, 56px);
+  --max-content: 1240px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-parchment);
+  color: var(--color-charcoal);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Paper texture overlay — copy the SVG noise data URI from
+   design-source/designs/Landing Page.html (search the <style>
+   block for the `body::before` rule that uses url("data:image/svg+xml..."))
+   and paste it verbatim below. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.14  0 0 0 0 0.13  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Sticky-nav scrolled state — applied by inline script in SiteNav */
+[data-scrolled="true"] {
+  border-bottom: 1px solid var(--color-stone);
+}
