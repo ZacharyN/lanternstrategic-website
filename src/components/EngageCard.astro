@@ -1,0 +1,80 @@
+---
+interface Props {
+  num: string;
+  category: string;
+  heading: string;
+  examples: string;
+}
+
+const { num, category, heading, examples } = Astro.props;
+---
+<article class="engage-card">
+  <span class="pill">{num} &middot; {category}</span>
+  <h3>{heading}</h3>
+  <p class="examples">{examples}</p>
+  <p class="desc"><slot /></p>
+  <p class="when"><slot name="when-it-fits" /></p>
+</article>
+
+<style>
+  .engage-card {
+    background: var(--color-parchment);
+    border: 1px solid var(--color-stone);
+    border-radius: 6px;
+    padding: 36px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .engage-card:hover {
+    border-color: var(--color-crimson);
+    transform: translateY(-2px);
+  }
+  .pill {
+    align-self: flex-start;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--color-warm-blush);
+    color: var(--color-crimson);
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2vw, 30px);
+    font-weight: 500;
+    color: var(--color-charcoal);
+    line-height: 1.15;
+    margin: 0;
+  }
+  .examples {
+    color: var(--color-warm-gray);
+    font-size: 14.5px;
+    line-height: 1.55;
+    font-style: italic;
+    margin: 0;
+  }
+  .desc {
+    color: var(--color-charcoal);
+    opacity: 0.85;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .when {
+    margin: 0;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-stone);
+    font-size: 14px;
+    color: var(--color-charcoal);
+  }
+  .when :global(b) {
+    font-weight: 600;
+    color: var(--color-crimson);
+  }
+</style>

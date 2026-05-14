@@ -1,0 +1,104 @@
+---
+import { CALENDLY_URL } from "../config";
+import Button from "./Button.astro";
+---
+<aside class="engage-panel">
+  <img class="watermark" src="/images/lantern-mark.png" alt="" aria-hidden="true" />
+  <div class="ef-text">
+    <span class="ef-eyebrow">Not sure which fits?</span>
+    <p class="ef-headline">The first conversation usually tells <em>us both</em>.</p>
+  </div>
+  <div class="ef-actions">
+    <Button href={CALENDLY_URL} external arrow>Start the conversation</Button>
+    <span class="meta">30 minutes &middot; no obligation</span>
+  </div>
+</aside>
+
+<style>
+  .engage-panel {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: clamp(28px, 3.5vw, 44px);
+    background: var(--color-parchment);
+    border: 1px solid var(--color-stone);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 760px) {
+    .engage-panel {
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+    }
+  }
+  .engage-panel::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--color-crimson);
+  }
+  .watermark {
+    position: absolute;
+    right: -30px;
+    bottom: -50px;
+    height: 220px;
+    width: auto;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+  .ef-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-crimson);
+  }
+  .ef-eyebrow::before {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: var(--color-crimson);
+  }
+  .ef-headline {
+    margin: 10px 0 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.25;
+    color: var(--color-charcoal);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .ef-headline em {
+    font-style: italic;
+    color: var(--color-crimson);
+    font-weight: 500;
+  }
+  .ef-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  @media (min-width: 760px) {
+    .ef-actions {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+  .meta {
+    font-size: 13.5px;
+    color: var(--color-warm-gray);
+  }
+</style>

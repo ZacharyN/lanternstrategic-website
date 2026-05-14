@@ -5,6 +5,8 @@ import SiteFooter from "../components/SiteFooter.astro";
 import Hero from "../components/Hero.astro";
 import SectionHead from "../components/SectionHead.astro";
 import ProblemTile from "../components/ProblemTile.astro";
+import EngageCard from "../components/EngageCard.astro";
+import EngagePanel from "../components/EngagePanel.astro";
 ---
 <BaseLayout title="Lantern Strategic" description="Operations &amp; technology consulting">
   <SiteNav />
@@ -44,6 +46,52 @@ import ProblemTile from "../components/ProblemTile.astro";
           The calendar fills up faster than anyone removes from it. Attention pays the bill.
         </ProblemTile>
       </div>
+    </div>
+  </section>
+
+  <section id="engage" class="engagements">
+    <div class="container">
+      <SectionHead eyebrow="Engagements" heading="Three ways to engage.">
+        <p>
+          Every business is at a different point in the conversation. Engagements are scoped
+          to fit; pricing is project-based or retainer.
+        </p>
+      </SectionHead>
+
+      <div class="engage-grid">
+        <EngageCard
+          num="01"
+          category="Defined projects"
+          heading="A clear scope, a specific outcome."
+          examples="Technology evaluations · AI training · focused operational assessments."
+        >
+          Flat fee. Defined deliverable. For when you already know what you need handled
+          and want it handled cleanly.
+          <Fragment slot="when-it-fits"><b>When it fits —</b> the problem is named, the scope is known.</Fragment>
+        </EngageCard>
+        <EngageCard
+          num="02"
+          category="Discovery & plan"
+          heading="Sit with the business. Learn how it actually runs."
+          examples="A defined period of listening, observing, and structuring."
+        >
+          We produce a plan you can execute — or hand back to us to run. For when you know
+          something needs to change but naming it cleanly is part of the work.
+          <Fragment slot="when-it-fits"><b>When it fits —</b> the symptom is loud, the diagnosis is not yet.</Fragment>
+        </EngageCard>
+        <EngageCard
+          num="03"
+          category="Embedded expertise"
+          heading="Senior operations thinking, on your team."
+          examples="Fractional executive support · coaching · on-site training · office hours."
+        >
+          A sounding board for the calls that don't fit anywhere else. For when the value
+          is in having someone to think with, not just a deliverable to receive.
+          <Fragment slot="when-it-fits"><b>When it fits —</b> the work is ongoing, the questions keep coming.</Fragment>
+        </EngageCard>
+      </div>
+
+      <EngagePanel />
     </div>
   </section>
 
@@ -100,6 +148,23 @@ import ProblemTile from "../components/ProblemTile.astro";
   @media (min-width: 1080px) {
     .problem-grid {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .engagements {
+    background: var(--color-parchment);
+    padding: clamp(72px, 9vw, 130px) 0;
+    position: relative;
+    z-index: 2;
+  }
+  .engage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 880px) {
+    .engage-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
   }
 </style>
