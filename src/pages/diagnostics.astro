@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import DiagHero from "../components/DiagHero.astro";
+import DiagIndexStrip from "../components/DiagIndexStrip.astro";
+import DiagBlock from "../components/DiagBlock.astro";
+import InviteBlock from "../components/InviteBlock.astro";
+import { diagnostics } from "../data/diagnostics";
+---
+<BaseLayout
+  title="The Lantern Diagnostics — Lantern Strategic"
+  description="Three short diagnostics — operational risk, sensing & feedback, antifragility — designed to surface what your business already knows."
+>
+  <SiteNav />
+  <DiagHero />
+  <DiagIndexStrip />
+  <main>
+    <div class="container">
+      {diagnostics.map((d) => <DiagBlock diagnostic={d} />)}
+    </div>
+  </main>
+  <InviteBlock />
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  main {
+    background: var(--color-parchment);
+    padding: clamp(72px, 8vw, 120px) 0;
+    position: relative;
+    z-index: 2;
+  }
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+</style>

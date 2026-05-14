@@ -2,8 +2,12 @@
 import { CALENDLY_URL, NAV_LINKS } from "../config";
 
 const currentPath = Astro.url.pathname;
-// A link is "active" only when it's a non-anchor link and matches the current path.
-const isActive = (href: string) => !href.includes("#") && href === currentPath;
+const normalize = (p: string) =>
+  p.length > 1 && p.endsWith("/") ? p.slice(0, -1) : p;
+// A link is "active" only when it's a non-anchor link and matches the current path,
+// ignoring any trailing slash differences between Astro's pathname and our nav hrefs.
+const isActive = (href: string) =>
+  !href.includes("#") && normalize(href) === normalize(currentPath);
 ---
 <header class="nav" id="nav">
   <div class="nav-inner">
