@@ -1,0 +1,53 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  variant?: "light" | "dark";
+}
+
+const { eyebrow, heading, variant = "light" } = Astro.props;
+---
+<header class="section-head">
+  <div class="left">
+    <Eyebrow variant={variant}>{eyebrow}</Eyebrow>
+    <h2>{heading}</h2>
+  </div>
+  <div class="right">
+    <slot />
+  </div>
+</header>
+
+<style>
+  .section-head {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr;
+    margin-bottom: clamp(40px, 5vw, 72px);
+    align-items: end;
+  }
+  @media (min-width: 880px) {
+    .section-head {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 56px;
+    }
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4.2vw, 52px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+    margin: 14px 0 0;
+    max-width: 22ch;
+  }
+  .right {
+    color: var(--color-warm-gray);
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.6;
+    max-width: 50ch;
+    text-wrap: pretty;
+  }
+</style>
