@@ -1,0 +1,34 @@
+---
+interface Props {
+  class?: string;
+  variant?: "light" | "dark";
+}
+
+const { class: className = "", variant = "light" } = Astro.props;
+---
+<span class:list={["eyebrow", `eyebrow-${variant}`, className]}>
+  <slot />
+</span>
+
+<style>
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+  }
+  .eyebrow-light { color: var(--color-crimson); }
+  .eyebrow-light::before { background: var(--color-crimson); }
+  .eyebrow-dark { color: var(--color-rust); }
+  .eyebrow-dark::before { background: var(--color-rust); }
+</style>
