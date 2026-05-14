@@ -1,0 +1,164 @@
+---
+import { CALENDLY_URL } from "../config";
+import Button from "./Button.astro";
+import Eyebrow from "./Eyebrow.astro";
+---
+<section class="hero">
+  <div class="container">
+    <img class="hero-stamp" src="/images/lantern-stamp.png" alt="" aria-hidden="true" />
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <Eyebrow>The Lantern Diagnostics</Eyebrow>
+        <h1>
+          Three short diagnostics to surface what your business
+          <em class="crimson">already knows.</em>
+        </h1>
+        <p class="lede">
+          Designed to bring forward the often overlooked risks and opportunities that emerge in
+          the day-to-day view of running a business.
+        </p>
+        <p class="sub">
+          Each takes roughly fifteen minutes. Pick whichever question matters most to you right
+          now &mdash; or work through more than one for a fuller picture. There's no scoring,
+          no benchmark, no funnel. Just structured questions that ask the things most frameworks miss.
+        </p>
+      </div>
+      <aside class="hero-aside">
+        <div class="meta-row">
+          <div>
+            <div class="meta-k">Time</div>
+            <div class="meta-v">~15 minutes each</div>
+          </div>
+          <div>
+            <div class="meta-k">Best for</div>
+            <div class="meta-v">Owners &amp; operators</div>
+          </div>
+        </div>
+        <div class="meta-row">
+          <div>
+            <div class="meta-k">Format</div>
+            <div class="meta-v">PDF download</div>
+          </div>
+          <div>
+            <div class="meta-k">Cost</div>
+            <div class="meta-v">Free, no email gate</div>
+          </div>
+        </div>
+      </aside>
+      <div class="hero-actions">
+        <Button href="#risk" arrow>Browse the three</Button>
+        <Button href={CALENDLY_URL} external variant="ghost">Talk one through with me</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(56px, 8vw, 110px);
+    padding-bottom: clamp(56px, 7vw, 96px);
+    overflow: hidden;
+  }
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    overflow: visible;
+  }
+  .hero-stamp {
+    position: absolute;
+    right: clamp(-180px, -8vw, -60px);
+    top: clamp(-40px, -1vw, 0px);
+    width: clamp(280px, 36vw, 520px);
+    height: auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (min-width: 880px) {
+    .hero-stamp { opacity: 0.14; }
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: end;
+  }
+  @media (min-width: 880px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    }
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--color-charcoal);
+    letter-spacing: -0.022em;
+    line-height: 1.04;
+    font-size: clamp(40px, 5.4vw, 72px);
+    text-wrap: balance;
+    margin: 22px 0 0;
+  }
+  h1 .crimson {
+    color: var(--color-crimson);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .lede {
+    margin: 26px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 1.7vw, 24px);
+    line-height: 1.45;
+    color: var(--color-charcoal);
+    max-width: 38ch;
+    text-wrap: pretty;
+  }
+  .sub {
+    margin: 18px 0 0;
+    color: color-mix(in oklab, var(--color-charcoal) 80%, transparent);
+    font-size: 17px;
+    line-height: 1.65;
+    max-width: 54ch;
+    text-wrap: pretty;
+  }
+
+  .hero-aside {
+    border-top: 1px solid var(--color-stone);
+    padding-top: 24px;
+    display: grid;
+    gap: 18px;
+  }
+  .hero-aside .meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .hero-aside .meta-k {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--color-warm-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .hero-aside .meta-v {
+    margin-top: 4px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--color-charcoal);
+  }
+
+  .hero-actions {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    grid-column: 1 / -1;
+  }
+</style>
