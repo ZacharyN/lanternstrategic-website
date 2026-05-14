@@ -1,0 +1,45 @@
+---
+interface Props {
+  num: string;
+  heading: string;
+}
+
+const { num, heading } = Astro.props;
+---
+<article class="problem-tile">
+  <span class="num">{num}</span>
+  <h3>{heading}</h3>
+  <p><slot /></p>
+</article>
+
+<style>
+  .problem-tile {
+    background: var(--color-parchment);
+    padding: 32px 28px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .num {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--color-crimson);
+    font-feature-settings: "lnum";
+    letter-spacing: 0.04em;
+  }
+  h3 {
+    font-family: var(--font-body);
+    font-size: clamp(18px, 1.4vw, 21px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-charcoal);
+    margin: 0;
+  }
+  p {
+    color: var(--color-warm-gray);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

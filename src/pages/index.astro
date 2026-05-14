@@ -3,9 +3,103 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import Hero from "../components/Hero.astro";
+import SectionHead from "../components/SectionHead.astro";
+import ProblemTile from "../components/ProblemTile.astro";
 ---
 <BaseLayout title="Lantern Strategic" description="Operations &amp; technology consulting">
   <SiteNav />
   <Hero />
+
+  <section id="approach" class="problems">
+    <div class="container">
+      <SectionHead eyebrow="The approach" heading="The problems that don't announce themselves.">
+        <p>
+          Most of the friction in a business doesn't announce itself. It's the third meeting
+          about the same thing. The workaround that became the process. The report that takes
+          a full day to pull together, originally built to answer a question nobody asks anymore.
+        </p>
+      </SectionHead>
+
+      <p class="pull-line">
+        These <em class="crimson">quiet problems</em> are the ones easiest to live with —
+        and hardest to fix from the inside.
+      </p>
+      <p class="problems-body">
+        The friction becomes the background. The workaround becomes the process. And the cost
+        compounds in ways nobody's tracking. Lantern Strategic is built to address the quiet
+        problems — the ones that don't show up in a dashboard, but show up in everyone's calendar.
+      </p>
+
+      <div class="problem-grid">
+        <ProblemTile num="01" heading="The third meeting about the same thing.">
+          Decisions that keep coming back because no one named who actually owns them.
+        </ProblemTile>
+        <ProblemTile num="02" heading="A process everyone has a workaround for.">
+          The map and the territory drifted apart years ago. Nobody flagged it.
+        </ProblemTile>
+        <ProblemTile num="03" heading="The day-long report no one reads.">
+          Built for a question that mattered once. Still costs a day every month.
+        </ProblemTile>
+        <ProblemTile num="04" heading="Recurring meetings that outlived their purpose.">
+          The calendar fills up faster than anyone removes from it. Attention pays the bill.
+        </ProblemTile>
+      </div>
+    </div>
+  </section>
+
   <SiteFooter />
 </BaseLayout>
+
+<style>
+  .problems {
+    background: var(--color-parchment-2);
+    padding: clamp(72px, 9vw, 130px) 0;
+    position: relative;
+    z-index: 2;
+  }
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .pull-line {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.32;
+    color: var(--color-charcoal);
+    max-width: 28ch;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .pull-line .crimson {
+    color: var(--color-crimson);
+    font-style: italic;
+  }
+  .problems-body {
+    margin-top: 28px;
+    max-width: 60ch;
+    font-size: 17px;
+    line-height: 1.65;
+    color: color-mix(in oklab, var(--color-charcoal) 88%, transparent);
+  }
+  .problem-grid {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--color-stone);
+    border-top: 1px solid var(--color-stone);
+    border-bottom: 1px solid var(--color-stone);
+  }
+  @media (min-width: 760px) {
+    .problem-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1080px) {
+    .problem-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
