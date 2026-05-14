@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.env
+.env.local
+.env.production
+design-source
+docs
+README.md
+*.md
+.claude
+.vscode
+.idea
+.astro
