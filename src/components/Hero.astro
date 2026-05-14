@@ -1,0 +1,83 @@
+---
+import { CALENDLY_URL } from "../config";
+import Button from "./Button.astro";
+import Eyebrow from "./Eyebrow.astro";
+---
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow-wrap">
+      <Eyebrow>Operations &amp; technology consulting</Eyebrow>
+    </div>
+    <div class="stamp-wrap">
+      <img src="/images/lantern-stamp.png" alt="Lantern Strategic" class="hero-stamp" />
+    </div>
+    <h1>Helping businesses move forward when the path isn't obvious.</h1>
+    <p class="hero-sub">
+      Lantern Strategic brings experienced operational thinking and practical technology
+      to the unnoticed friction slowing your business down.
+    </p>
+    <div class="hero-actions">
+      <Button href={CALENDLY_URL} external arrow>Book a 30‑minute call</Button>
+      <Button href="#approach" variant="ghost">See how we work</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(48px, 7vw, 96px);
+    padding-bottom: clamp(72px, 9vw, 140px);
+    text-align: center;
+  }
+  .hero-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .stamp-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .hero-stamp {
+    width: clamp(160px, 18vw, 220px);
+    height: auto;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--color-charcoal);
+    letter-spacing: -0.022em;
+    line-height: 1.02;
+    font-size: clamp(40px, 6.4vw, 84px);
+    text-wrap: balance;
+    margin: 0 auto;
+    max-width: 18ch;
+  }
+  .hero-sub {
+    color: var(--color-charcoal);
+    opacity: 0.82;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.55;
+    max-width: 56ch;
+    text-wrap: pretty;
+    margin: 24px auto 0;
+    text-align: center;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+  }
+</style>
