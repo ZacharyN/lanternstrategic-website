@@ -1,0 +1,142 @@
+---
+import { Image } from "astro:assets";
+import { CALENDLY_URL } from "../config";
+import Button from "./Button.astro";
+import Eyebrow from "./Eyebrow.astro";
+import zachCasual from "../assets/zach-casual.jpg";
+---
+<section class="block dark" id="talk">
+  <div class="container">
+    <div class="invite">
+      <div class="invite-text">
+        <Eyebrow variant="dark">If something surfaces</Eyebrow>
+        <h2>Forty&#8209;five minutes. Coffee, cocktails, lunch, or virtual.</h2>
+        <p class="lede">
+          If working through one of these surfaces something you'd like to think through
+          with someone, grab time on my calendar.
+        </p>
+        <p class="body">
+          I'm Zach Nelson. My firm, Lantern Strategic, is a consulting practice focused on
+          operational capacity, risk mitigation, and technology. Most of my work is with
+          owners and operators navigating the complexity that comes with scale, change,
+          disruption, or all three.
+        </p>
+        <p class="body">
+          The diagnostics on this page reflect how I think about that work &mdash; looking
+          carefully at the structure of a business, paying attention to what most frames
+          miss, and removing what's getting in the way before adding anything new.
+        </p>
+        <div class="actions">
+          <Button href={CALENDLY_URL} external arrow>Grab 45 minutes on my calendar</Button>
+          <Button href="/#about" variant="ghost">Learn more about Lantern Strategic</Button>
+        </div>
+      </div>
+      <div class="invite-photo">
+        <Image
+          src={zachCasual}
+          alt="Zach Nelson"
+          widths={[360, 460, 720, 920]}
+          sizes="(min-width: 880px) 460px, 100vw"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section.block {
+    padding-top: clamp(72px, 8vw, 120px);
+    padding-bottom: clamp(72px, 8vw, 120px);
+    position: relative;
+    z-index: 2;
+  }
+  .block.dark {
+    background: var(--color-charcoal);
+    color: var(--color-parchment);
+  }
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    z-index: 2;
+  }
+
+  .invite {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .invite {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 64px;
+    }
+  }
+
+  .invite-text h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--color-parchment);
+    letter-spacing: -0.016em;
+    font-size: clamp(28px, 3.6vw, 44px);
+    line-height: 1.1;
+    margin: 18px 0 0;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+  .invite-text .lede {
+    margin: 22px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 1.7vw, 24px);
+    line-height: 1.42;
+    color: var(--color-parchment);
+    max-width: 36ch;
+    text-wrap: pretty;
+  }
+  .invite-text .body {
+    margin: 16px 0 0;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: color-mix(in oklab, var(--color-parchment) 80%, transparent);
+    max-width: 50ch;
+  }
+  .invite-text .body + .body {
+    margin-top: 12px;
+  }
+
+  .actions {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+  /* Recolor the ghost button on dark background */
+  .actions :global(.btn-ghost) {
+    color: var(--color-parchment);
+    border-color: var(--color-parchment);
+  }
+  .actions :global(.btn-ghost:hover) {
+    background: var(--color-parchment);
+    color: var(--color-charcoal);
+  }
+
+  .invite-photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 4px;
+    max-width: 460px;
+    width: 100%;
+  }
+  .invite-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    display: block;
+    filter: saturate(0.96);
+  }
+</style>
