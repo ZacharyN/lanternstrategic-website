@@ -1,0 +1,163 @@
+---
+import { Image } from "astro:assets";
+import Eyebrow from "./Eyebrow.astro";
+import zachCasual from "../assets/zach-casual.jpg";
+---
+<section class="block alt" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-photo">
+        <Image
+          src={zachCasual}
+          alt="Zachary Nelson, founder of Lantern Strategic"
+          widths={[360, 460, 720, 920]}
+          sizes="(min-width: 880px) 460px, 100vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-text">
+        <Eyebrow>About</Eyebrow>
+        <h2>Zach Nelson &mdash; operations and technology executive.</h2>
+        <p class="lede">
+          Fifteen years working with organizations under pressure, tracking the same
+          pattern across very different industries.
+        </p>
+        <p class="body">
+          Zach's career has followed one thread: the difference between a business that
+          scales and one that stalls is rarely strategy &mdash; it's the operational design
+          underneath. He's supported over a hundred Right at Home and IKOR franchisees
+          through every stage, from new owners getting started to established operators
+          looking to exit.
+        </p>
+        <p class="body">
+          He's done issue advocacy work, disaster recovery consulting, and nonprofit
+          leadership. Along the way, he's built data infrastructure, implemented patient
+          advocacy software, and led regional marketing operations.
+        </p>
+        <p class="body">
+          A generalist by orientation and a systems thinker by training &mdash; most useful in
+          rooms where the straightforward answers have already been tried and the real
+          problem hasn't surfaced yet.
+        </p>
+
+        <div class="about-stats">
+          <div class="stat">
+            <div class="n">15<span class="unit">yrs</span></div>
+            <div class="l">Operating &amp; advising experience</div>
+          </div>
+          <div class="stat">
+            <div class="n">100+</div>
+            <div class="l">Business owners advised &amp; supported</div>
+          </div>
+          <div class="stat">
+            <div class="n">5</div>
+            <div class="l">Industries across the same pattern</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section.block {
+    padding-top: clamp(72px, 9vw, 130px);
+    padding-bottom: clamp(72px, 9vw, 130px);
+    position: relative;
+    z-index: 2;
+  }
+  .block.alt { background: var(--color-parchment-2); }
+
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    z-index: 2;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .about-grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 64px;
+    }
+  }
+
+  .about-photo {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--color-warm-blush);
+    max-width: 460px;
+    width: 100%;
+  }
+  .about-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    display: block;
+    filter: saturate(0.96);
+  }
+
+  .about-text h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--color-charcoal);
+    letter-spacing: -0.018em;
+    font-size: clamp(30px, 4.2vw, 52px);
+    line-height: 1.08;
+    margin: 18px 0 0;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+  .about-text .lede {
+    margin: 22px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 1.7vw, 24px);
+    line-height: 1.4;
+    color: var(--color-charcoal);
+    text-wrap: pretty;
+  }
+  .about-text .body {
+    margin: 18px 0 0;
+    color: color-mix(in oklab, var(--color-charcoal) 80%, transparent);
+    font-size: 17px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .about-text .body + .body { margin-top: 14px; }
+
+  .about-stats {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    padding: 24px 0;
+    border-top: 1px solid var(--color-stone);
+    border-bottom: 1px solid var(--color-stone);
+  }
+  .about-stats .stat .n {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 2.4vw, 36px);
+    color: var(--color-crimson);
+    font-feature-settings: "lnum";
+    line-height: 1;
+  }
+  .about-stats .stat .n .unit {
+    font-size: 0.55em;
+  }
+  .about-stats .stat .l {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--color-warm-gray);
+    line-height: 1.35;
+  }
+</style>
