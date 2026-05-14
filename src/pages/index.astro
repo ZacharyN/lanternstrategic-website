@@ -1,10 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 ---
 <BaseLayout title="Lantern Strategic" description="Scaffolding preview">
   <SiteNav />
-  <main style="min-height: 200vh; padding: 120px var(--gutter);">
-    <p>Scroll to verify the sticky nav scroll state.</p>
+  <main style="min-height: 100vh; padding: 120px var(--gutter);">
+    <p>Preview body.</p>
   </main>
+  <SiteFooter />
 </BaseLayout>

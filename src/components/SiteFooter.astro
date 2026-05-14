@@ -1,0 +1,157 @@
+---
+import { BRAND_NAME, BRAND_TAGLINE, CALENDLY_URL, CONTACT_EMAIL, SUBSTACK_URL } from "../config";
+---
+<footer class="site-foot">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="/images/lantern-stamp.png" alt={BRAND_NAME} />
+        <p class="tag">{BRAND_TAGLINE}</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/#approach">Approach</a></li>
+          <li><a href="/#engage">Engagements</a></li>
+          <li><a href="/#about">About Zach</a></li>
+          <li><a href="/diagnostics">The Lantern Diagnostics</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Talk</h4>
+        <ul>
+          <li>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              Book a call
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </li>
+          <li>
+            <a href={SUBSTACK_URL} target="_blank" rel="noopener noreferrer">
+              Zach's Substack <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> {BRAND_NAME}</span>
+      <span class="foot-legal">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-foot {
+    background: var(--color-charcoal);
+    color: var(--color-parchment);
+    padding: clamp(48px, 5vw, 72px) 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .foot-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+  .foot-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(232, 224, 220, 0.15);
+  }
+  @media (min-width: 880px) {
+    .foot-top {
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 48px;
+    }
+  }
+  .foot-brand {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .foot-brand img {
+    height: 64px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+  }
+  .foot-brand .tag {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--color-parchment);
+    max-width: 28ch;
+  }
+  .foot-brand .tag span {
+    display: block;
+    color: color-mix(in oklab, var(--color-parchment) 55%, transparent);
+    font-size: 14px;
+    margin-top: 10px;
+    font-family: var(--font-body);
+  }
+  .foot-col h4 {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in oklab, var(--color-parchment) 55%, transparent);
+    margin-bottom: 14px;
+  }
+  .foot-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .foot-col a {
+    text-decoration: none;
+    color: var(--color-parchment);
+    font-size: 15px;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover {
+    color: var(--color-rust);
+  }
+  .foot-bottom {
+    padding-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: 13px;
+    color: color-mix(in oklab, var(--color-parchment) 55%, transparent);
+  }
+  .foot-legal {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .foot-legal a {
+    color: color-mix(in oklab, var(--color-parchment) 70%, transparent);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .foot-legal a:hover {
+    color: var(--color-rust);
+  }
+  .foot-legal span {
+    opacity: 0.55;
+  }
+</style>
+
+<script>
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+</script>
