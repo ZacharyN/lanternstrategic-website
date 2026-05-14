@@ -1,0 +1,78 @@
+---
+import { diagnostics } from "../data/diagnostics";
+---
+<section class="index-row">
+  <div class="container index-grid">
+    <span class="ix-label">The three diagnostics</span>
+    <div class="ix-links">
+      {diagnostics.map((d) => (
+        <a class="ix-link" href={`#${d.id}`}>
+          <span class="ix-num">{d.num}</span>
+          <span set:html={d.title} />
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .index-row {
+    background: var(--color-parchment-2);
+    border-top: 1px solid var(--color-stone);
+    border-bottom: 1px solid var(--color-stone);
+    padding: 28px 0;
+    position: relative;
+    z-index: 2;
+  }
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+  .index-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .index-grid {
+      grid-template-columns: auto 1fr;
+      gap: 36px;
+    }
+  }
+  .ix-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-warm-gray);
+  }
+  .ix-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .ix-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-charcoal);
+    font-size: 15.5px;
+    font-weight: 500;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .ix-link:hover {
+    color: var(--color-crimson);
+    border-bottom-color: var(--color-crimson);
+  }
+  .ix-num {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--color-crimson);
+    font-feature-settings: "lnum";
+  }
+</style>
