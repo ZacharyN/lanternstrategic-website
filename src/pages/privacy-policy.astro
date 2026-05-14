@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+---
+<BaseLayout
+  title="Privacy Policy — Lantern Strategic"
+  description="Privacy Policy for Lantern Strategic."
+>
+  <SiteNav />
+  <main class="placeholder">
+    <div class="container">
+      <Eyebrow>Legal</Eyebrow>
+      <h1>Privacy Policy</h1>
+      <p>Coming soon. In the meantime, reach out via the <a href="/#contact">contact form</a> on the home page.</p>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .placeholder {
+    background: var(--color-parchment);
+    padding: clamp(120px, 12vw, 180px) 0;
+    min-height: 60vh;
+    position: relative;
+    z-index: 2;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6.4vw, 84px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    margin: 24px 0;
+    color: var(--color-charcoal);
+  }
+  p { color: var(--color-warm-gray); font-size: 18px; }
+  a { color: var(--color-crimson); }
+</style>
