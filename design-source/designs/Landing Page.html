@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lantern Strategic — Helping businesses move forward when the path isn't obvious.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --crimson:      #761215;
+    --deep-crimson: #4d0b0d;
+    --ember:        #a01a1e;
+    --rust:         #c4403a;
+    --warm-blush:   #f5e6e6;
+    --parchment:    #faf6f0;
+    --parchment-2:  #f3ece0;
+    --charcoal:     #2a2421;
+    --warm-gray:    #7a6e6b;
+    --stone:        #e8e0dc;
+
+    --serif: "Playfair Display", "Iowan Old Style", Georgia, serif;
+    --sans:  "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --max:    1240px;
+    --gutter: clamp(20px, 4vw, 56px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--parchment);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper grain — toggleable via [data-texture] */
+  body[data-texture="on"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.14  0 0 0 0 0.13  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Typography */
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(40px, 6.4vw, 84px); line-height: 1.02; letter-spacing: -0.022em; }
+  h2 { font-size: clamp(30px, 4.2vw, 52px); line-height: 1.08; letter-spacing: -0.018em; }
+  h3 { font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; }
+  p  { margin: 0; }
+
+  a { color: inherit; }
+
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ───── NAV ───── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--parchment) 88%, transparent);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .nav[data-scrolled="true"] { border-color: var(--stone); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--charcoal);
+  }
+  .brand img { height: 40px; width: auto; display: block; }
+  .brand-word {
+    font-family: var(--serif); font-size: 19px; font-weight: 500;
+    color: var(--crimson); letter-spacing: 0.005em;
+  }
+  .brand-word em { font-style: normal; color: var(--charcoal); font-weight: 400; }
+  .nav-links { display: none; align-items: center; gap: 30px; }
+  .nav-links a {
+    text-decoration: none; color: var(--charcoal);
+    font-size: 15px; font-weight: 500;
+    position: relative; padding: 6px 0;
+  }
+  .nav-links a:hover { color: var(--crimson); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--crimson); color: #fff;
+    text-decoration: none; font-weight: 600; font-size: 14px;
+    padding: 10px 18px; border-radius: 999px;
+    transition: background .15s ease, transform .15s ease;
+    letter-spacing: .005em;
+  }
+  .nav-cta:hover { background: var(--deep-crimson); }
+  @media (min-width: 880px) {
+    .nav-links { display: inline-flex; }
+  }
+
+  /* Mobile menu button */
+  .menu-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border: 1px solid var(--stone);
+    background: transparent; border-radius: 10px;
+    color: var(--charcoal); cursor: pointer;
+  }
+  @media (min-width: 880px) { .menu-btn { display: none; } }
+
+  .menu-sheet {
+    display: none;
+    border-top: 1px solid var(--stone);
+    background: var(--parchment);
+    padding: 12px var(--gutter) 18px;
+  }
+  .menu-sheet a {
+    display: block; padding: 14px 4px;
+    text-decoration: none; color: var(--charcoal);
+    font-size: 18px; font-weight: 500;
+    border-bottom: 1px solid var(--stone);
+  }
+  .menu-sheet a:last-of-type { border-bottom: none; }
+  .menu-sheet[data-open="true"] { display: block; }
+
+  /* ───── BUTTONS ───── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    text-decoration: none; font-weight: 600; font-size: 16px;
+    padding: 14px 26px; border-radius: 999px;
+    transition: background .15s, color .15s, transform .15s, border-color .15s;
+    cursor: pointer; border: 1px solid transparent;
+    letter-spacing: .005em;
+  }
+  .btn-primary { background: var(--crimson); color: #fff; }
+  .btn-primary:hover { background: var(--deep-crimson); }
+  .btn-ghost {
+    background: transparent; color: var(--charcoal);
+    border-color: var(--charcoal);
+  }
+  .btn-ghost:hover { background: var(--charcoal); color: var(--parchment); }
+  .btn-arrow::after {
+    content: "→"; display: inline-block;
+    transition: transform .2s ease;
+  }
+  .btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(3px); }
+
+  /* ───── HERO — shared ───── */
+  .hero { position: relative; padding-top: clamp(48px, 7vw, 96px); padding-bottom: clamp(72px, 9vw, 140px); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--sans); font-size: 12.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: var(--crimson);
+  }
+  .eyebrow::before {
+    content: ""; display: inline-block;
+    width: 28px; height: 1px; background: var(--crimson);
+  }
+  .hero-sub {
+    color: var(--charcoal); opacity: .82;
+    font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55;
+    max-width: 56ch; text-wrap: pretty;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+  /* HERO V1 — Editorial type-led */
+  .hero-v1 .hero-grid {
+    display: grid; gap: clamp(28px, 4vw, 48px);
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
+  @media (min-width: 880px) {
+    .hero-v1 .hero-grid { grid-template-columns: minmax(0,1.55fr) minmax(0,1fr); }
+  }
+  .hero-v1 h1 .accent {
+    color: var(--crimson);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .hero-v1 h1 .underline-word {
+    position: relative; white-space: nowrap;
+  }
+  .hero-v1 .hero-meta {
+    margin-top: 28px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .hero-v1 .hero-aside {
+    position: relative;
+    padding: 26px 0 0;
+    border-top: 1px solid var(--stone);
+    color: var(--warm-gray);
+    font-size: 14.5px; line-height: 1.6;
+    max-width: 36ch;
+  }
+  .hero-v1 .hero-aside b { color: var(--charcoal); font-weight: 600; }
+  .hero-v1 .lantern-watermark {
+    position: absolute; right: calc(var(--gutter) * -0.2);
+    top: 0; height: 240px; width: auto; opacity: .07;
+    pointer-events: none; z-index: 0;
+  }
+  @media (min-width: 880px) {
+    .hero-v1 .lantern-watermark { height: 320px; opacity: .08; }
+  }
+  .hero-v1 .hero-actions { margin-top: 36px; }
+
+  /* HERO V2 — Stamp-anchored, centered */
+  .hero-v2 { text-align: center; }
+  .hero-v2 .stamp-wrap {
+    display: flex; justify-content: center;
+    margin-bottom: 28px;
+  }
+  .hero-v2 .stamp-wrap img {
+    width: clamp(160px, 18vw, 220px);
+    height: auto;
+  }
+  .hero-v2 h1 {
+    margin: 0 auto; max-width: 18ch;
+  }
+  .hero-v2 .hero-sub {
+    margin: 24px auto 0; text-align: center;
+  }
+  .hero-v2 .hero-actions { margin-top: 32px; justify-content: center; }
+  .hero-v2 .hero-eyebrow-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
+
+  /* HERO V3 — Split with headshot */
+  .hero-v3 .hero-grid {
+    display: grid; gap: clamp(28px, 4vw, 56px);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .hero-v3 .hero-grid { grid-template-columns: 1.15fr 1fr; }
+  }
+  .hero-v3 .portrait {
+    position: relative;
+    aspect-ratio: 4/5;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--warm-blush);
+    order: 2;
+  }
+  @media (min-width: 880px) {
+    .hero-v3 .portrait { order: unset; aspect-ratio: 4/5; max-height: 620px; }
+  }
+  .hero-v3 .portrait img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+    display: block;
+  }
+  .hero-v3 .portrait::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(42,36,33,.18));
+    pointer-events: none;
+  }
+  .hero-v3 .portrait-caption {
+    position: absolute; left: 18px; bottom: 16px; right: 18px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    color: #fff; font-size: 13px; font-weight: 500; letter-spacing: .04em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0,0,0,.4);
+  }
+  .hero-v3 h1 { font-size: clamp(38px, 4.8vw, 64px); }
+  .hero-v3 .hero-actions { margin-top: 32px; }
+  .hero-v3 .hero-text { order: 1; }
+
+  /* ───── SECTION COMMONS ───── */
+  section.block {
+    padding-top: clamp(72px, 9vw, 130px);
+    padding-bottom: clamp(72px, 9vw, 130px);
+    position: relative;
+  }
+  .block.alt { background: var(--parchment-2); }
+  .block.dark {
+    background: var(--charcoal);
+    color: var(--parchment);
+  }
+  .block.dark h1, .block.dark h2, .block.dark h3 { color: var(--parchment); }
+  .block.dark .eyebrow { color: var(--rust); }
+  .block.dark .eyebrow::before { background: var(--rust); }
+
+  .section-head {
+    display: grid; gap: 18px;
+    grid-template-columns: 1fr;
+    margin-bottom: clamp(40px, 5vw, 72px);
+    align-items: end;
+  }
+  @media (min-width: 880px) {
+    .section-head { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 56px; }
+  }
+  .section-head h2 { max-width: 22ch; }
+  .section-head p {
+    color: var(--warm-gray); font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.6; max-width: 50ch;
+  }
+
+  /* ───── PROBLEMS SECTION ───── */
+  .problems-lede {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(22px, 2.4vw, 32px); line-height: 1.32;
+    color: var(--charcoal);
+    max-width: 28ch;
+    text-wrap: balance;
+  }
+  .problems-lede .pull { color: var(--crimson); font-style: italic; }
+  .problems-body {
+    margin-top: 28px; max-width: 60ch;
+    font-size: 17px; line-height: 1.65;
+    color: color-mix(in oklab, var(--charcoal) 88%, transparent);
+  }
+  .problems-grid {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: grid; grid-template-columns: 1fr; gap: 1px;
+    background: var(--stone);
+    border-top: 1px solid var(--stone);
+    border-bottom: 1px solid var(--stone);
+  }
+  @media (min-width: 760px) {
+    .problems-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1080px) {
+    .problems-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .problem-card {
+    background: var(--parchment);
+    padding: 32px 28px 36px;
+    display: flex; flex-direction: column; gap: 14px;
+    min-height: 220px;
+  }
+  .problem-num {
+    font-family: var(--serif); font-size: 14px;
+    color: var(--crimson); font-feature-settings: "lnum";
+    letter-spacing: .04em;
+  }
+  .problem-card h3 {
+    font-size: clamp(18px, 1.4vw, 21px);
+    font-family: var(--sans);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--charcoal);
+  }
+  .problem-card p {
+    color: var(--warm-gray); font-size: 15px; line-height: 1.55;
+  }
+
+  /* ───── THREE WAYS TO ENGAGE ───── */
+  .engage-grid {
+    display: grid; grid-template-columns: 1fr; gap: 20px;
+  }
+  @media (min-width: 880px) {
+    .engage-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+  .engage-card {
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+    border-radius: 6px;
+    padding: 36px 32px 32px;
+    display: flex; flex-direction: column; gap: 16px;
+    position: relative;
+    transition: border-color .2s, transform .2s;
+  }
+  .engage-card:hover {
+    border-color: var(--crimson);
+    transform: translateY(-2px);
+  }
+  .engage-card .pill {
+    align-self: flex-start;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--warm-blush); color: var(--crimson);
+  }
+  .engage-card h3 {
+    font-family: var(--serif); font-size: clamp(24px, 2vw, 30px);
+    font-weight: 500; color: var(--charcoal);
+    line-height: 1.15;
+  }
+  .engage-card .examples {
+    color: var(--warm-gray); font-size: 14.5px; line-height: 1.55;
+    font-style: italic;
+  }
+  .engage-card .desc {
+    color: var(--charcoal); opacity: .85; font-size: 16px; line-height: 1.55;
+  }
+  .engage-card .when {
+    margin-top: auto; padding-top: 18px; border-top: 1px solid var(--stone);
+    font-size: 14px; color: var(--charcoal);
+  }
+  .engage-card .when b { font-weight: 600; color: var(--crimson); }
+  .engage-foot {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: clamp(28px, 3.5vw, 44px) clamp(28px, 3.5vw, 44px);
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 760px) {
+    .engage-foot { grid-template-columns: 1fr auto; gap: 40px; }
+  }
+  .engage-foot::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; background: var(--crimson);
+  }
+  .engage-foot .ef-mark {
+    position: absolute; right: -30px; bottom: -50px;
+    height: 220px; width: auto; opacity: .05;
+    pointer-events: none;
+  }
+  .engage-foot .ef-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--crimson);
+  }
+  .engage-foot .ef-eyebrow::before {
+    content: ""; width: 20px; height: 1px; background: var(--crimson);
+  }
+  .engage-foot .ef-headline {
+    margin-top: 10px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.25;
+    color: var(--charcoal);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .engage-foot .ef-headline em {
+    font-style: italic; color: var(--crimson); font-weight: 500;
+  }
+  .engage-foot .ef-actions {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  }
+  @media (min-width: 760px) {
+    .engage-foot .ef-actions { align-items: flex-end; text-align: right; }
+  }
+  .engage-foot .ef-actions .meta {
+    font-size: 13.5px; color: var(--warm-gray);
+  }
+
+  /* ───── ABOUT ───── */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr; gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .about-grid { grid-template-columns: 0.85fr 1.15fr; gap: 64px; }
+  }
+  .about-photo {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--warm-blush);
+    max-width: 460px;
+  }
+  .about-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+    display: block;
+    filter: saturate(0.96);
+  }
+  .about-photo .frame-mark {
+    position: absolute; top: 18px; left: 18px;
+    background: var(--parchment); color: var(--crimson);
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .about-text h2 { max-width: 18ch; }
+  .about-text .lede {
+    margin-top: 22px;
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.7vw, 24px); line-height: 1.4;
+    color: var(--charcoal);
+    text-wrap: pretty;
+  }
+  .about-text .body {
+    margin-top: 18px;
+    color: color-mix(in oklab, var(--charcoal) 80%, transparent);
+    font-size: 17px; line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .about-text .body + .body { margin-top: 14px; }
+  .about-stats {
+    margin-top: 32px;
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+    padding: 24px 0;
+    border-top: 1px solid var(--stone);
+    border-bottom: 1px solid var(--stone);
+  }
+  .about-stats .stat .n {
+    font-family: var(--serif); font-size: clamp(28px, 2.4vw, 36px);
+    color: var(--crimson); font-feature-settings: "lnum";
+    line-height: 1;
+  }
+  .about-stats .stat .l {
+    margin-top: 6px; font-size: 13px; color: var(--warm-gray);
+    line-height: 1.35;
+  }
+
+  /* ───── CONTACT ───── */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr; gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .contact-grid { grid-template-columns: 1fr 1.2fr; gap: 80px; }
+  }
+  .contact-intro h2 { max-width: 14ch; }
+  .contact-intro p {
+    margin-top: 18px; color: color-mix(in oklab, var(--parchment) 78%, transparent);
+    font-size: 17px; line-height: 1.6; max-width: 42ch;
+  }
+  .contact-channels {
+    margin-top: 28px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .contact-channel {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(232,224,220,.15);
+    text-decoration: none; color: var(--parchment);
+    transition: color .15s;
+  }
+  .contact-channel:last-of-type { border-bottom: none; }
+  .contact-channel:hover { color: var(--rust); }
+  .contact-channel .label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .14em;
+    color: color-mix(in oklab, var(--parchment) 60%, transparent);
+    width: 110px; flex: none;
+  }
+  .contact-channel .val { font-size: 16px; font-weight: 500; }
+
+  form.contact-form {
+    background: color-mix(in oklab, var(--parchment) 96%, var(--charcoal));
+    color: var(--charcoal);
+    border-radius: 8px;
+    padding: clamp(28px, 3vw, 40px);
+    display: grid; gap: 18px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  @media (min-width: 600px) { .form-row.two { grid-template-columns: 1fr 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label {
+    font-size: 12.5px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--warm-gray);
+  }
+  .field label .opt {
+    font-weight: 500; letter-spacing: .02em; text-transform: none;
+    color: var(--warm-gray); margin-left: 6px; opacity: .8;
+  }
+  .field input, .field textarea {
+    font-family: var(--sans); font-size: 16px;
+    color: var(--charcoal);
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+    border-radius: 6px;
+    padding: 13px 14px;
+    transition: border-color .15s, box-shadow .15s;
+    width: 100%;
+  }
+  .field textarea { resize: vertical; min-height: 130px; }
+  .field input:focus, .field textarea:focus {
+    outline: none; border-color: var(--crimson);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--crimson) 18%, transparent);
+  }
+  .form-foot {
+    margin-top: 4px;
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    align-items: center; gap: 14px;
+  }
+  .form-foot .privacy {
+    font-size: 13px; color: var(--warm-gray); max-width: 32ch;
+  }
+  .form-success {
+    background: var(--warm-blush); color: var(--crimson);
+    padding: 14px 18px; border-radius: 6px;
+    font-size: 15px; font-weight: 500;
+    border: 1px solid color-mix(in oklab, var(--crimson) 20%, transparent);
+    display: none;
+  }
+  .form-success[data-show="true"] { display: block; }
+
+  /* ───── FOOTER ───── */
+  footer.site-foot {
+    background: var(--charcoal); color: var(--parchment);
+    padding: clamp(48px, 5vw, 72px) 0 32px;
+  }
+  .foot-top {
+    display: grid; grid-template-columns: 1fr; gap: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(232,224,220,.15);
+  }
+  @media (min-width: 880px) {
+    .foot-top { grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; }
+  }
+  .foot-brand { display: flex; align-items: flex-start; gap: 16px; }
+  .foot-brand img { height: 64px; width: auto; filter: brightness(0) invert(1); opacity: .9; }
+  .foot-brand .tag {
+    font-family: var(--serif); font-size: 18px; line-height: 1.35;
+    color: var(--parchment); max-width: 28ch;
+  }
+  .foot-brand .tag span { display: block; color: color-mix(in oklab, var(--parchment) 55%, transparent); font-size: 14px; margin-top: 10px; font-family: var(--sans); }
+  .foot-col h4 {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: color-mix(in oklab, var(--parchment) 55%, transparent);
+    margin-bottom: 14px;
+  }
+  .foot-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .foot-col a {
+    text-decoration: none; color: var(--parchment); font-size: 15px;
+    transition: color .15s;
+  }
+  .foot-col a:hover { color: var(--rust); }
+  .foot-bottom {
+    padding-top: 24px;
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    gap: 14px;
+    font-size: 13px;
+    color: color-mix(in oklab, var(--parchment) 55%, transparent);
+  }
+  .foot-legal { display: inline-flex; align-items: center; gap: 10px; }
+  .foot-legal a {
+    color: color-mix(in oklab, var(--parchment) 70%, transparent);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .foot-legal a:hover { color: var(--rust); }
+  .foot-legal span { opacity: .55; }
+
+  /* Hide variants we're not showing */
+  .hero[data-variant="v1"] .hero-v2, .hero[data-variant="v1"] .hero-v3 { display: none; }
+  .hero[data-variant="v2"] .hero-v1, .hero[data-variant="v2"] .hero-v3 { display: none; }
+  .hero[data-variant="v3"] .hero-v1, .hero[data-variant="v3"] .hero-v2 { display: none; }
+
+  /* divider rule */
+  .rule-row { display: flex; align-items: center; gap: 18px; }
+  .rule-row .rule { flex: 1; height: 1px; background: var(--stone); }
+  .rule-row .mark { color: var(--crimson); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+
+  /* Anchor offset */
+  [id] { scroll-margin-top: 90px; }
+
+  /* small bits */
+  .lantern-glow {
+    position: absolute; pointer-events: none; z-index: 0; opacity: .9;
+  }
+</style>
+</head>
+<body data-texture="on">
+
+<a href="#contact" style="position:absolute;left:-9999px;">Skip to contact</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Lantern Strategic, home">
+      <img src="assets/lantern-mark.png" alt="" />
+      <span class="brand-word">Lantern <em>Strategic</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#approach">Approach</a>
+      <a href="#engage">Engagements</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener" class="nav-cta">Book a call <span aria-hidden="true">→</span></a>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false" id="menuBtn">
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+        <path d="M1 1H17M1 7H17M1 13H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="menu-sheet" id="menuSheet">
+    <a href="#approach">Approach</a>
+    <a href="#engage">Engagements</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="hero" data-variant="v2">
+    <div class="container">
+
+      <!-- V1: Editorial type-led -->
+      <div class="hero-v1">
+        <img class="lantern-watermark" src="assets/lantern-mark.png" alt="" aria-hidden="true" />
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Operations &amp; technology consulting</span>
+            <h1 style="margin-top: 22px;">
+              Helping businesses move forward when the path <span class="accent">isn't&nbsp;obvious.</span>
+            </h1>
+            <div class="hero-meta">
+              <p class="hero-sub">
+                Lantern Strategic brings experienced operational thinking and practical
+                technology to the unnoticed friction slowing your business down.
+              </p>
+              <div class="hero-actions">
+                <a class="btn btn-primary btn-arrow" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Book a 30‑minute call</a>
+                <a class="btn btn-ghost" href="#approach">See how we work</a>
+              </div>
+            </div>
+          </div>
+          <aside class="hero-aside">
+            <p>
+              <b>For owners and operators</b> navigating the moments when the next move matters
+              more than the last hundred — when the right call now sets up years of better
+              operating, and the wrong one quietly costs you ground.
+            </p>
+          </aside>
+        </div>
+      </div>
+
+      <!-- V2: Stamp-centered -->
+      <div class="hero-v2">
+        <div class="hero-eyebrow-wrap"><span class="eyebrow">Operations &amp; technology consulting</span></div>
+        <div class="stamp-wrap"><img src="assets/lantern-stamp.png" alt="Lantern Strategic" /></div>
+        <h1>Helping businesses move forward when the path isn't obvious.</h1>
+        <p class="hero-sub">
+          Lantern Strategic brings experienced operational thinking and practical technology
+          to the unnoticed friction slowing your business down.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-arrow" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Book a 30‑minute call</a>
+          <a class="btn btn-ghost" href="#approach">See how we work</a>
+        </div>
+      </div>
+
+      <!-- V3: Split with headshot -->
+      <div class="hero-v3">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <span class="eyebrow">Operations &amp; technology consulting</span>
+            <h1 style="margin-top: 22px;">
+              Helping businesses move forward when the path isn't obvious.
+            </h1>
+            <p class="hero-sub" style="margin-top: 22px;">
+              Experienced operational thinking and practical technology, applied to the
+              unnoticed friction slowing your business down.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary btn-arrow" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Book a 30‑minute call</a>
+              <a class="btn btn-ghost" href="#approach">See how we work</a>
+            </div>
+          </div>
+          <div class="portrait">
+            <img src="assets/zach-casual.jpg" alt="Zach Nelson" />
+            <div class="portrait-caption">
+              <span>Zach Nelson</span>
+              <span>Principal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── PROBLEMS THAT DON'T ANNOUNCE THEMSELVES ─── -->
+  <section class="block alt" id="approach">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">The approach</span>
+          <h2 style="margin-top: 18px;">The problems that don't announce themselves.</h2>
+        </div>
+        <p>
+          Most of the friction in a business doesn't announce itself. It's the third meeting
+          about the same thing. The workaround that became the process. The report that takes
+          a full day to pull together, originally built to answer a question nobody asks anymore.
+        </p>
+      </div>
+
+      <p class="problems-lede">
+        These <span class="pull">quiet problems</span> are the ones easiest to live with —
+        and hardest to fix from the inside.
+      </p>
+      <p class="problems-body">
+        The friction becomes the background. The workaround becomes the process. And the cost
+        compounds in ways nobody's tracking. Lantern Strategic is built to address the quiet
+        problems — the ones that don't show up in a dashboard, but show up in everyone's calendar.
+      </p>
+
+      <div class="problems-grid">
+        <article class="problem-card">
+          <span class="problem-num">01</span>
+          <h3>The third meeting about the same thing.</h3>
+          <p>Decisions that keep coming back because no one named who actually owns them.</p>
+        </article>
+        <article class="problem-card">
+          <span class="problem-num">02</span>
+          <h3>A process everyone has a workaround for.</h3>
+          <p>The map and the territory drifted apart years ago. Nobody flagged it.</p>
+        </article>
+        <article class="problem-card">
+          <span class="problem-num">03</span>
+          <h3>The day-long report no one reads.</h3>
+          <p>Built for a question that mattered once. Still costs a day every month.</p>
+        </article>
+        <article class="problem-card">
+          <span class="problem-num">04</span>
+          <h3>Recurring meetings that outlived their purpose.</h3>
+          <p>The calendar fills up faster than anyone removes from it. Attention pays the bill.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THREE WAYS TO ENGAGE ─── -->
+  <section class="block" id="engage">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Engagements</span>
+          <h2 style="margin-top: 18px;">Three ways to engage.</h2>
+        </div>
+        <p>
+          Every business is at a different point in the conversation. Engagements are scoped
+          to fit; pricing is project-based or retainer.
+        </p>
+      </div>
+
+      <div class="engage-grid">
+        <article class="engage-card">
+          <span class="pill">01 · Defined projects</span>
+          <h3>A clear scope, a specific outcome.</h3>
+          <p class="examples">Technology evaluations · AI training · focused operational assessments.</p>
+          <p class="desc">
+            Flat fee. Defined deliverable. For when you already know what you need handled
+            and want it handled cleanly.
+          </p>
+          <p class="when"><b>When it fits —</b> the problem is named, the scope is known.</p>
+        </article>
+
+        <article class="engage-card">
+          <span class="pill">02 · Discovery &amp; plan</span>
+          <h3>Sit with the business. Learn how it actually runs.</h3>
+          <p class="examples">A defined period of listening, observing, and structuring.</p>
+          <p class="desc">
+            We produce a plan you can execute — or hand back to us to run. For when you know
+            something needs to change but naming it cleanly is part of the work.
+          </p>
+          <p class="when"><b>When it fits —</b> the symptom is loud, the diagnosis is not yet.</p>
+        </article>
+
+        <article class="engage-card">
+          <span class="pill">03 · Embedded expertise</span>
+          <h3>Senior operations thinking, on your team.</h3>
+          <p class="examples">Fractional executive support · coaching · on-site training · office hours.</p>
+          <p class="desc">
+            A sounding board for the calls that don't fit anywhere else. For when the value
+            is in having someone to think with, not just a deliverable to receive.
+          </p>
+          <p class="when"><b>When it fits —</b> the work is ongoing, the questions keep coming.</p>
+        </article>
+      </div>
+
+      <div class="engage-foot">
+        <img class="ef-mark" src="assets/lantern-mark.png" alt="" aria-hidden="true" />
+        <div class="ef-text">
+          <span class="ef-eyebrow">Not sure which fits?</span>
+          <p class="ef-headline">The first conversation usually tells <em>us both</em>.</p>
+        </div>
+        <div class="ef-actions">
+          <a class="btn btn-primary btn-arrow" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Start the conversation</a>
+          <span class="meta">30 minutes · no obligation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section class="block alt" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo">
+          <img src="assets/zach-casual.jpg" alt="Zachary Nelson, founder of Lantern Strategic" />
+        </div>
+        <div class="about-text">
+          <span class="eyebrow">About</span>
+          <h2 style="margin-top: 18px;">Zach Nelson — operations and technology executive.</h2>
+          <p class="lede">
+            Fifteen years working with organizations under pressure, tracking the same
+            pattern across very different industries.
+          </p>
+          <p class="body">
+            Zach's career has followed one thread: the difference between a business that
+            scales and one that stalls is rarely strategy — it's the operational design
+            underneath. He's supported over a hundred Right at Home and IKOR franchisees
+            through every stage, from new owners getting started to established operators
+            looking to exit.
+          </p>
+          <p class="body">
+            He's done issue advocacy work, disaster recovery consulting, and nonprofit
+            leadership. Along the way, he's built data infrastructure, implemented patient
+            advocacy software, and led regional marketing operations.
+          </p>
+          <p class="body">
+            A generalist by orientation and a systems thinker by training — most useful in
+            rooms where the straightforward answers have already been tried and the real
+            problem hasn't surfaced yet.
+          </p>
+
+          <div class="about-stats">
+            <div class="stat">
+              <div class="n">15<span style="font-size:.55em;">yrs</span></div>
+              <div class="l">Operating &amp; advising experience</div>
+            </div>
+            <div class="stat">
+              <div class="n">100+</div>
+              <div class="l">Business owners advised &amp; supported</div>
+            </div>
+            <div class="stat">
+              <div class="n">5</div>
+              <div class="l">Industries across the same pattern</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section class="block dark" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-intro">
+          <span class="eyebrow">Let's talk</span>
+          <h2 style="margin-top: 18px;">The best first conversation is a short one.</h2>
+          <p>
+            Tell us a little about what you're working through, and we'll set up a call
+            to see if there's a fit. No long forms, no sales pitch.
+          </p>
+          <div class="contact-channels">
+            <a class="contact-channel" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">
+              <span class="label">Book directly</span>
+              <span class="val">calendly.com/zacharynelson →</span>
+            </a>
+            <a class="contact-channel" href="mailto:zach@lanternstrategic.com">
+              <span class="label">Email</span>
+              <span class="val">zach@lanternstrategic.com</span>
+            </a>
+            <a class="contact-channel" href="https://lanternstrategic.com" target="_blank" rel="noopener">
+              <span class="label">On the web</span>
+              <span class="val">lanternstrategic.com</span>
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-success" id="formSuccess" data-show="false" role="status">
+            Thanks — your message is on its way. I'll be in touch within a business day.
+          </div>
+          <div class="form-row two">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="f-company">Company</label>
+              <input id="f-company" name="company" type="text" required autocomplete="organization" />
+            </div>
+          </div>
+          <div class="form-row two">
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone <span class="opt">(optional)</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-mind">What's on your mind?</label>
+            <textarea id="f-mind" name="message" placeholder="A sentence or two on what you're working through is plenty."></textarea>
+          </div>
+          <div class="form-foot">
+            <p class="privacy">Your note goes straight to Zach. It isn't added to a list and won't be used for follow-up sales emails.</p>
+            <button class="btn btn-primary btn-arrow" type="submit">Send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="assets/lantern-stamp.png" alt="Lantern Strategic" />
+        <p class="tag">
+          Helping businesses move forward when the path isn't obvious.
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#approach">The approach</a></li>
+          <li><a href="#engage">Engagements</a></li>
+          <li><a href="#about">About Zach</a></li>
+          <li><a href="Diagnostics.html">The Lantern Diagnostics</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Talk</h4>
+        <ul>
+          <li><a href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Book a call</a></li>
+          <li><a href="mailto:zach@lanternstrategic.com">zach@lanternstrategic.com</a></li>
+          <li><a href="https://wanderingfocus.substack.com/" target="_blank" rel="noopener">Zach's Substack →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Lantern Strategic</span>
+      <span class="foot-legal">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── TWEAKS ─── -->
+<div id="tweaks-root"></div>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.setAttribute('data-scrolled', window.scrollY > 8 ? 'true' : 'false');
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile menu
+  const mb = document.getElementById('menuBtn');
+  const ms = document.getElementById('menuSheet');
+  mb.addEventListener('click', () => {
+    const open = ms.getAttribute('data-open') === 'true';
+    ms.setAttribute('data-open', open ? 'false' : 'true');
+    mb.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+  ms.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    ms.setAttribute('data-open', 'false');
+    mb.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Contact form (front-end demo)
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = ['f-name','f-company','f-email'].every(id => document.getElementById(id).value.trim());
+    if (!ok) {
+      form.reportValidity?.();
+      return;
+    }
+    document.getElementById('formSuccess').setAttribute('data-show', 'true');
+    form.reset();
+  });
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks-app.jsx"></script>
+
+</body>
+</html>

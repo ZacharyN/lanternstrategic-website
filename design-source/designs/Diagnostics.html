@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Lantern Diagnostics — Lantern Strategic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --crimson:      #761215;
+    --deep-crimson: #4d0b0d;
+    --ember:        #a01a1e;
+    --rust:         #c4403a;
+    --warm-blush:   #f5e6e6;
+    --parchment:    #faf6f0;
+    --parchment-2:  #f3ece0;
+    --charcoal:     #2a2421;
+    --warm-gray:    #7a6e6b;
+    --stone:        #e8e0dc;
+
+    --serif: "Playfair Display", "Iowan Old Style", Georgia, serif;
+    --sans:  "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --max:    1240px;
+    --gutter: clamp(20px, 4vw, 56px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--parchment);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.14  0 0 0 0 0.13  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(40px, 5.4vw, 72px); line-height: 1.04; letter-spacing: -0.022em; }
+  h2 { font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.016em; }
+  h3 { font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; }
+  p { margin: 0; }
+  a { color: inherit; }
+
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ───── NAV ───── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--parchment) 88%, transparent);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .nav[data-scrolled="true"] { border-color: var(--stone); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--charcoal);
+  }
+  .brand img { height: 40px; width: auto; display: block; }
+  .brand-word {
+    font-family: var(--serif); font-size: 19px; font-weight: 500;
+    color: var(--crimson);
+  }
+  .brand-word em { font-style: normal; color: var(--charcoal); font-weight: 400; }
+  .nav-links { display: none; align-items: center; gap: 30px; }
+  .nav-links a {
+    text-decoration: none; color: var(--charcoal);
+    font-size: 15px; font-weight: 500;
+    padding: 6px 0;
+  }
+  .nav-links a:hover { color: var(--crimson); }
+  .nav-links a[aria-current="page"] {
+    color: var(--crimson);
+    border-bottom: 1px solid var(--crimson);
+  }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--crimson); color: #fff;
+    text-decoration: none; font-weight: 600; font-size: 14px;
+    padding: 10px 18px; border-radius: 999px;
+    transition: background .15s;
+  }
+  .nav-cta:hover { background: var(--deep-crimson); }
+  @media (min-width: 880px) { .nav-links { display: inline-flex; } }
+
+  .menu-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border: 1px solid var(--stone);
+    background: transparent; border-radius: 10px;
+    color: var(--charcoal); cursor: pointer;
+  }
+  @media (min-width: 880px) { .menu-btn { display: none; } }
+  .menu-sheet {
+    display: none;
+    border-top: 1px solid var(--stone);
+    background: var(--parchment);
+    padding: 12px var(--gutter) 18px;
+  }
+  .menu-sheet a {
+    display: block; padding: 14px 4px;
+    text-decoration: none; color: var(--charcoal);
+    font-size: 18px; font-weight: 500;
+    border-bottom: 1px solid var(--stone);
+  }
+  .menu-sheet a:last-of-type { border-bottom: none; }
+  .menu-sheet[data-open="true"] { display: block; }
+
+  /* ───── BUTTONS ───── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    text-decoration: none; font-weight: 600; font-size: 16px;
+    padding: 14px 26px; border-radius: 999px;
+    transition: background .15s, color .15s, transform .15s, border-color .15s;
+    cursor: pointer; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--crimson); color: #fff; }
+  .btn-primary:hover { background: var(--deep-crimson); }
+  .btn-ghost {
+    background: transparent; color: var(--charcoal);
+    border-color: var(--charcoal);
+  }
+  .btn-ghost:hover { background: var(--charcoal); color: var(--parchment); }
+  .btn-arrow::after {
+    content: "→"; display: inline-block;
+    transition: transform .2s ease;
+  }
+  .btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(3px); }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: var(--crimson);
+  }
+  .eyebrow::before {
+    content: ""; display: inline-block;
+    width: 28px; height: 1px; background: var(--crimson);
+  }
+
+  /* ───── HERO ───── */
+  .hero {
+    position: relative;
+    padding-top: clamp(56px, 8vw, 110px);
+    padding-bottom: clamp(56px, 7vw, 96px);
+  }
+  .hero-inner {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: end;
+  }
+  @media (min-width: 880px) {
+    .hero-inner { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+  }
+  .hero h1 .accent { color: var(--crimson); font-style: italic; font-weight: 400; }
+  .hero .lede {
+    margin-top: 26px;
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.7vw, 24px);
+    line-height: 1.45;
+    color: var(--charcoal);
+    max-width: 38ch;
+    text-wrap: pretty;
+  }
+  .hero .sub {
+    margin-top: 18px;
+    color: color-mix(in oklab, var(--charcoal) 80%, transparent);
+    font-size: 17px;
+    line-height: 1.65;
+    max-width: 54ch;
+    text-wrap: pretty;
+  }
+  .hero-aside {
+    border-top: 1px solid var(--stone);
+    padding-top: 24px;
+    display: grid; gap: 18px;
+  }
+  .hero-aside .meta-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  }
+  .hero-aside .meta-row .meta-k {
+    font-size: 11.5px; font-weight: 700;
+    color: var(--warm-gray); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .hero-aside .meta-row .meta-v {
+    margin-top: 4px;
+    font-family: var(--serif);
+    font-size: 17px; line-height: 1.3;
+    color: var(--charcoal);
+  }
+  .hero { overflow: hidden; }
+  .hero .container { overflow: visible; }
+  .hero-stamp {
+    position: absolute;
+    right: clamp(-180px, -8vw, -60px);
+    top: clamp(-40px, -1vw, 0px);
+    width: clamp(280px, 36vw, 520px);
+    height: auto;
+    opacity: .12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (min-width: 880px) {
+    .hero-stamp { opacity: .14; }
+  }
+  .hero-inner { position: relative; z-index: 1; }
+
+  .hero-actions {
+    margin-top: 36px;
+    display: flex; flex-wrap: wrap; gap: 14px;
+    grid-column: 1 / -1;
+  }
+
+  /* ───── INDEX / NAV ROW ───── */
+  .index-row {
+    background: var(--parchment-2);
+    border-top: 1px solid var(--stone);
+    border-bottom: 1px solid var(--stone);
+    padding: 28px 0;
+  }
+  .index-grid {
+    display: grid; gap: 18px;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .index-grid { grid-template-columns: auto 1fr; gap: 36px; }
+  }
+  .index-grid .ix-label {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--warm-gray);
+  }
+  .index-grid .ix-links {
+    display: flex; flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .index-grid .ix-link {
+    display: inline-flex; align-items: baseline; gap: 10px;
+    text-decoration: none; color: var(--charcoal);
+    font-size: 15.5px; font-weight: 500;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s, color .15s;
+  }
+  .index-grid .ix-link:hover { color: var(--crimson); border-bottom-color: var(--crimson); }
+  .index-grid .ix-link .ix-num {
+    font-family: var(--serif); font-size: 13px;
+    color: var(--crimson);
+    font-feature-settings: "lnum";
+  }
+
+  /* ───── SECTION COMMONS ───── */
+  section.block {
+    padding-top: clamp(72px, 8vw, 120px);
+    padding-bottom: clamp(72px, 8vw, 120px);
+    position: relative;
+  }
+  .block.alt { background: var(--parchment-2); }
+  .block.dark {
+    background: var(--charcoal);
+    color: var(--parchment);
+  }
+  .block.dark h2, .block.dark h3 { color: var(--parchment); }
+  .block.dark .eyebrow { color: var(--rust); }
+  .block.dark .eyebrow::before { background: var(--rust); }
+
+  /* ───── DIAGNOSTIC CARDS (long-form) ───── */
+  .diag {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(24px, 3vw, 40px);
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .diag { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: 64px; }
+  }
+  .diag + .diag {
+    margin-top: clamp(64px, 7vw, 96px);
+    padding-top: clamp(64px, 7vw, 96px);
+    border-top: 1px solid var(--stone);
+  }
+  .diag-left .num {
+    font-family: var(--serif);
+    color: var(--crimson);
+    font-size: clamp(56px, 6vw, 96px);
+    line-height: 1;
+    font-feature-settings: "lnum";
+    margin-bottom: 14px;
+  }
+  .diag-left h2 {
+    max-width: 14ch;
+  }
+  .diag-left .meta {
+    margin-top: 22px;
+    display: grid; gap: 14px;
+    padding: 18px 20px;
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+    border-radius: 6px;
+    position: relative;
+  }
+  .diag-left .meta::before {
+    content: ""; position: absolute;
+    left: 0; top: 12px; bottom: 12px; width: 3px;
+    background: var(--crimson);
+    border-radius: 0 2px 2px 0;
+  }
+  .diag-left .meta .m-row {
+    display: grid; gap: 4px;
+  }
+  .diag-left .meta .m-k {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--warm-gray);
+  }
+  .diag-left .meta .m-v {
+    font-size: 14.5px; color: var(--charcoal);
+    line-height: 1.45;
+  }
+  .diag-question {
+    margin-top: 4px;
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height: 1.3;
+    color: var(--charcoal);
+    text-wrap: balance;
+  }
+  .diag-question .q-tag {
+    display: block;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 10px;
+  }
+  .diag-question em {
+    font-style: italic; color: var(--crimson);
+    font-weight: 500;
+  }
+  .diag-body { display: flex; flex-direction: column; gap: 18px; }
+  .diag-body > p {
+    color: color-mix(in oklab, var(--charcoal) 88%, transparent);
+    font-size: 17px; line-height: 1.65;
+    text-wrap: pretty;
+    max-width: 62ch;
+  }
+  .diag-domains {
+    margin-top: 4px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .diag-domains .domain {
+    font-size: 12.5px; font-weight: 600;
+    padding: 6px 12px;
+    background: var(--warm-blush);
+    color: var(--crimson);
+    border-radius: 999px;
+    letter-spacing: .02em;
+  }
+  .diag-actions {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+  }
+  .diag-actions .secondary {
+    font-size: 14.5px; color: var(--warm-gray);
+  }
+
+  /* ───── INVITATION / CTA ───── */
+  .invite {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .invite { grid-template-columns: 1.1fr 1fr; gap: 64px; }
+  }
+  .invite-photo {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    border-radius: 4px;
+    max-width: 460px;
+    width: 100%;
+  }
+  .invite-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+    display: block;
+    filter: saturate(0.96);
+  }
+  .invite h2 { max-width: 18ch; }
+  .invite .lede {
+    margin-top: 22px;
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.7vw, 24px);
+    line-height: 1.42;
+    color: var(--parchment);
+    max-width: 36ch;
+    text-wrap: pretty;
+  }
+  .invite .body {
+    margin-top: 16px;
+    font-size: 16.5px; line-height: 1.65;
+    color: color-mix(in oklab, var(--parchment) 80%, transparent);
+    max-width: 50ch;
+  }
+  .invite .body + .body { margin-top: 12px; }
+  .invite .actions {
+    margin-top: 30px;
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+  }
+  .invite .actions .btn-ghost {
+    color: var(--parchment);
+    border-color: var(--parchment);
+  }
+  .invite .actions .btn-ghost:hover {
+    background: var(--parchment); color: var(--charcoal);
+  }
+
+  /* ───── NEWSLETTER ───── */
+  .newsletter {
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+    border-radius: 6px;
+    padding: clamp(28px, 3.5vw, 44px);
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .newsletter::before {
+    content: ""; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--crimson);
+  }
+  @media (min-width: 760px) {
+    .newsletter { grid-template-columns: 1.2fr 1fr; }
+  }
+  .newsletter h3 {
+    font-family: var(--serif); font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 500; line-height: 1.25; color: var(--charcoal);
+    max-width: 24ch;
+  }
+  .newsletter p {
+    margin-top: 10px; color: var(--warm-gray);
+    font-size: 15.5px; line-height: 1.55;
+    max-width: 44ch;
+  }
+  .newsletter .right { display: flex; justify-content: flex-end; }
+
+  /* ───── FOOTER ───── */
+  footer.site-foot {
+    background: var(--charcoal); color: var(--parchment);
+    padding: clamp(48px, 5vw, 72px) 0 32px;
+  }
+  .foot-top {
+    display: grid; grid-template-columns: 1fr; gap: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(232,224,220,.15);
+  }
+  @media (min-width: 880px) {
+    .foot-top { grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; }
+  }
+  .foot-brand { display: flex; align-items: flex-start; gap: 16px; }
+  .foot-brand img { height: 64px; width: auto; filter: brightness(0) invert(1); opacity: .9; }
+  .foot-brand .tag {
+    font-family: var(--serif); font-size: 18px; line-height: 1.35;
+    color: var(--parchment); max-width: 28ch;
+  }
+  .foot-col h4 {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: color-mix(in oklab, var(--parchment) 55%, transparent);
+    margin-bottom: 14px;
+  }
+  .foot-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .foot-col a {
+    text-decoration: none; color: var(--parchment); font-size: 15px;
+    transition: color .15s;
+  }
+  .foot-col a:hover { color: var(--rust); }
+  .foot-bottom {
+    padding-top: 24px;
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    gap: 14px;
+    font-size: 13px;
+    color: color-mix(in oklab, var(--parchment) 55%, transparent);
+  }
+  .foot-legal { display: inline-flex; align-items: center; gap: 10px; }
+  .foot-legal a {
+    color: color-mix(in oklab, var(--parchment) 70%, transparent);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .foot-legal a:hover { color: var(--rust); }
+  .foot-legal span { opacity: .55; }
+
+  [id] { scroll-margin-top: 90px; }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="Landing Page.html" aria-label="Lantern Strategic, home">
+      <img src="assets/lantern-mark.png" alt="" />
+      <span class="brand-word">Lantern <em>Strategic</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="Landing Page.html#approach">Approach</a>
+      <a href="Landing Page.html#engage">Engagements</a>
+      <a href="Landing Page.html#about">About</a>
+      <a href="Diagnostics.html" aria-current="page">Diagnostics</a>
+    </nav>
+    <a href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener" class="nav-cta">Book a call <span aria-hidden="true">→</span></a>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false" id="menuBtn">
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+        <path d="M1 1H17M1 7H17M1 13H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="menu-sheet" id="menuSheet">
+    <a href="Landing Page.html#approach">Approach</a>
+    <a href="Landing Page.html#engage">Engagements</a>
+    <a href="Landing Page.html#about">About</a>
+    <a href="Diagnostics.html" aria-current="page">Diagnostics</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="container">
+      <img class="hero-stamp" src="assets/lantern-stamp.png" alt="" aria-hidden="true" />
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow">The Lantern Diagnostics</span>
+          <h1 style="margin-top: 22px;">
+            Three short diagnostics to surface what your business <span class="accent">already knows.</span>
+          </h1>
+          <p class="lede">
+            Designed to bring forward the often overlooked risks and opportunities that emerge in
+            the day-to-day view of running a business.
+          </p>
+          <p class="sub">
+            Each takes roughly fifteen minutes. Pick whichever question matters most to you right
+            now — or work through more than one for a fuller picture. There's no scoring,
+            no benchmark, no funnel. Just structured questions that ask the things most frameworks miss.
+          </p>
+        </div>
+        <aside class="hero-aside">
+          <div class="meta-row">
+            <div>
+              <div class="meta-k">Time</div>
+              <div class="meta-v">~15 minutes each</div>
+            </div>
+            <div>
+              <div class="meta-k">Best for</div>
+              <div class="meta-v">Owners &amp; operators</div>
+            </div>
+          </div>
+          <div class="meta-row">
+            <div>
+              <div class="meta-k">Format</div>
+              <div class="meta-v">PDF download</div>
+            </div>
+            <div>
+              <div class="meta-k">Cost</div>
+              <div class="meta-v">Free, no email gate</div>
+            </div>
+          </div>
+        </aside>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-arrow" href="#risk">Browse the three</a>
+          <a class="btn btn-ghost" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Talk one through with me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INDEX STRIP ─── -->
+  <section class="index-row">
+    <div class="container index-grid">
+      <span class="ix-label">The three diagnostics</span>
+      <div class="ix-links">
+        <a class="ix-link" href="#risk"><span class="ix-num">01</span> Operational Risk Velocity</a>
+        <a class="ix-link" href="#sensing"><span class="ix-num">02</span> Sensing &amp; Feedback Loops</a>
+        <a class="ix-link" href="#antifragile"><span class="ix-num">03</span> Antifragile</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DIAGNOSTICS ─── -->
+  <section class="block">
+    <div class="container">
+
+      <!-- 01 RISK VELOCITY -->
+      <article class="diag" id="risk">
+        <div class="diag-left">
+          <div class="num">01</div>
+          <h2>Operational Risk Velocity</h2>
+          <div class="meta">
+            <div class="m-row">
+              <span class="m-k">Time</span>
+              <span class="m-v">Roughly fifteen minutes</span>
+            </div>
+            <div class="m-row">
+              <span class="m-k">Best for</span>
+              <span class="m-v">
+                Operators looking to understand the risks their business faces. An excellent
+                starting point for those beginning to think about operational excellence.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="diag-body">
+          <p class="diag-question">
+            <span class="q-tag">The question it asks</span>
+            Which of the risks in your business are moving <em>fast</em>, which are moving
+            <em>slowly</em>, and which kind is on your radar?
+          </p>
+          <p>
+            Operational risk shows up in two speeds. Fast risks announce themselves — a key
+            employee resigns, a vendor goes down, a breach happens. Slow risks accumulate
+            quietly — margin compresses by half a point a quarter, vendor lock-in deepens,
+            technical debt grows.
+          </p>
+          <p>
+            Human attention is calibrated to fast change, which leads most organizations to
+            track fast risks closely and slow risks loosely, often without realizing it.
+            This diagnostic walks through five domains, asking what's moving fast and what's
+            moving slowly in each — surfacing the pattern of where you're attending well and
+            where you're not.
+          </p>
+          <div class="diag-domains">
+            <span class="domain">People &amp; knowledge</span>
+            <span class="domain">Vendors</span>
+            <span class="domain">Technology</span>
+            <span class="domain">Regulatory</span>
+            <span class="domain">Financial</span>
+          </div>
+          <div class="diag-actions">
+            <a class="btn btn-primary btn-arrow" href="#" data-download="risk-velocity">Download the diagnostic</a>
+            <span class="secondary">PDF · fillable · 15 minutes</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 SENSING -->
+      <article class="diag" id="sensing">
+        <div class="diag-left">
+          <div class="num">02</div>
+          <h2>Sensing &amp; Feedback Loops</h2>
+          <div class="meta">
+            <div class="m-row">
+              <span class="m-k">Time</span>
+              <span class="m-v">Roughly fifteen minutes</span>
+            </div>
+            <div class="m-row">
+              <span class="m-k">Best for</span>
+              <span class="m-v">
+                Operators who suspect their business has information it isn't using, or who
+                want to think about how their organization actually learns.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="diag-body">
+          <p class="diag-question">
+            <span class="q-tag">The question it asks</span>
+            How does your business <em>notice</em> when something has changed — and what
+            happens with what it notices?
+          </p>
+          <p>
+            Business problems are rarely invisible. The challenge most businesses face is
+            moving from recognizing the problem to getting the right people to act on it.
+            A bookkeeper sees margin compressing. A long-tenured employee notices a vendor's
+            quality slipping. A salesperson hears the same objection three times in a quarter.
+            The signal exists — but is it reaching decision-makers?
+          </p>
+          <p>
+            This diagnostic looks at the feedback loops your business depends on across five
+            domains. It helps you examine how signals are being generated and what happens
+            once they're received. Most businesses learn well in some areas and poorly in
+            others; the asymmetry is usually the most useful thing the diagnostic surfaces.
+          </p>
+          <div class="diag-domains">
+            <span class="domain">Customers &amp; market</span>
+            <span class="domain">Financials &amp; operations</span>
+            <span class="domain">Employees</span>
+            <span class="domain">Vendors</span>
+            <span class="domain">Operating environment</span>
+          </div>
+          <div class="diag-actions">
+            <a class="btn btn-primary btn-arrow" href="#" data-download="sensing">Download the diagnostic</a>
+            <span class="secondary">PDF · fillable · 15 minutes</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 ANTIFRAGILE -->
+      <article class="diag" id="antifragile">
+        <div class="diag-left">
+          <div class="num">03</div>
+          <h2>Antifragile</h2>
+          <div class="meta">
+            <div class="m-row">
+              <span class="m-k">Time</span>
+              <span class="m-v">Roughly fifteen minutes</span>
+            </div>
+            <div class="m-row">
+              <span class="m-k">Best for</span>
+              <span class="m-v">
+                Operators interested in a structural look at where their business sits
+                relative to uncertainty.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="diag-body">
+          <p class="diag-question">
+            <span class="q-tag">The question it asks</span>
+            Where does your business <em>get stronger</em> from stress, where does it just
+            survive stress, and where does stress actually do damage?
+          </p>
+          <p>
+            Most business advice stops at resilience — the ability to absorb a shock and
+            return to baseline. Resilience is real and valuable, but it's also not the
+            highest bar. Some businesses, by design or by accident, use stress as a catalyst
+            for improvement. Nassim Taleb, who coined the term, calls this "antifragility."
+          </p>
+          <p>
+            Two businesses lose a major client. One struggles to regain its footing; the
+            other ends the year stronger than before. Same shock, different trajectory.
+            This diagnostic walks through five domains and helps you place each on the
+            spectrum from fragile to antifragile — surfacing where exposure has quietly
+            accumulated, and where you may already have built more strength than you realize.
+          </p>
+          <div class="diag-domains">
+            <span class="domain">Revenue</span>
+            <span class="domain">Key dependencies</span>
+            <span class="domain">Operations</span>
+            <span class="domain">Financial position</span>
+            <span class="domain">People</span>
+          </div>
+          <div class="diag-actions">
+            <a class="btn btn-primary btn-arrow" href="#" data-download="antifragile">Download the diagnostic</a>
+            <span class="secondary">PDF · fillable · 15 minutes</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ─── INVITATION ─── -->
+  <section class="block dark" id="talk">
+    <div class="container">
+      <div class="invite">
+        <div>
+          <span class="eyebrow">If something surfaces</span>
+          <h2 style="margin-top: 18px;">Forty‑five minutes. Coffee, cocktails, lunch, or virtual.</h2>
+          <p class="lede">
+            If working through one of these surfaces something you'd like to think through
+            with someone, grab time on my calendar.
+          </p>
+          <p class="body">
+            I'm Zach Nelson. My firm, Lantern Strategic, is a consulting practice focused on
+            operational capacity, risk mitigation, and technology. Most of my work is with
+            owners and operators navigating the complexity that comes with scale, change,
+            disruption, or all three.
+          </p>
+          <p class="body">
+            The diagnostics on this page reflect how I think about that work — looking
+            carefully at the structure of a business, paying attention to what most frames
+            miss, and removing what's getting in the way before adding anything new.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary btn-arrow" href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Grab 45 minutes on my calendar</a>
+            <a class="btn btn-ghost" href="Landing Page.html#about">Learn more about Lantern Strategic</a>
+          </div>
+        </div>
+        <div class="invite-photo">
+          <img src="assets/zach-casual.jpg" alt="Zach Nelson" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NEWSLETTER section removed per request — Wandering Focus link lives in the footer ─── -->
+
+</main>
+
+<footer class="site-foot">
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="assets/lantern-stamp.png" alt="Lantern Strategic" />
+        <p class="tag">
+          Helping businesses move forward when the path isn't obvious.
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="Landing Page.html#approach">The approach</a></li>
+          <li><a href="Landing Page.html#engage">Engagements</a></li>
+          <li><a href="Landing Page.html#about">About Zach</a></li>
+          <li><a href="Diagnostics.html">The Lantern Diagnostics</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Talk</h4>
+        <ul>
+          <li><a href="https://calendly.com/zacharynelson/consulting-welcome" target="_blank" rel="noopener">Book a call</a></li>
+          <li><a href="mailto:zach@lanternstrategic.com">zach@lanternstrategic.com</a></li>
+          <li><a href="https://wanderingfocus.substack.com/" target="_blank" rel="noopener">Zach's Substack →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Lantern Strategic</span>
+      <span class="foot-legal">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.setAttribute('data-scrolled', window.scrollY > 8 ? 'true' : 'false');
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const mb = document.getElementById('menuBtn');
+  const ms = document.getElementById('menuSheet');
+  mb.addEventListener('click', () => {
+    const open = ms.getAttribute('data-open') === 'true';
+    ms.setAttribute('data-open', open ? 'false' : 'true');
+    mb.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+  ms.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    ms.setAttribute('data-open', 'false');
+    mb.setAttribute('aria-expanded', 'false');
+  }));
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
