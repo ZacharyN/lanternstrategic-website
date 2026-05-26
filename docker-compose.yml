@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        PUBLIC_WEB3FORMS_ACCESS_KEY: ${PUBLIC_WEB3FORMS_ACCESS_KEY}
+    container_name: lantern-strategic
+    restart: unless-stopped
+    networks:
+      - traefik-proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-proxy
+      - traefik.http.routers.lantern-strategic.rule=Host(`lanternstrategic.com`) || Host(`www.lanternstrategic.com`)
+      - traefik.http.routers.lantern-strategic.entrypoints=websecure
+      - traefik.http.routers.lantern-strategic.tls.certresolver=letsencrypt
+      - traefik.http.services.lantern-strategic.loadbalancer.server.port=80
+      - traefik.http.routers.lantern-strategic-http.rule=Host(`lanternstrategic.com`) || Host(`www.lanternstrategic.com`)
+      - traefik.http.routers.lantern-strategic-http.entrypoints=web
+      - traefik.http.routers.lantern-strategic-http.middlewares=lantern-strategic-redirect
+      - traefik.http.middlewares.lantern-strategic-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.lantern-strategic-redirect.redirectscheme.permanent=true
+
+networks:
+  traefik-proxy:
+    external: true
